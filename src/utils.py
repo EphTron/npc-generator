@@ -1,4 +1,5 @@
 import pandas as pd
+import pdfkit
 
 
 def merge_json_files(file_path_list, output_json_file):
@@ -105,12 +106,31 @@ def name_txt_to_json(file_name, output_json_file):
     out.close()
 
 
+def create_pdf_from_html_string(html_str):
+    options = {
+        'page-size': 'A6',
+        'margin-top': '0.75in',
+        'margin-right': '0.75in',
+        'margin-bottom': '0.75in',
+        'margin-left': '0.75in',
+        'encoding': "UTF-8",
+        'dpi': 300,
+        'quiet': '',
+        # 'print-media-type': '',
+    }
+
+    html_doc = open('out.html', 'w')
+    html_doc.write(html_str)
+    html_doc.close()
+    pdf = pdfkit.from_file('out.html', 'out-from-html.pdf', options=options)
+
+
 def main():
-    merge_json_files(['name-lists/........json',
-                      'name-lists/........json',
-                      'name-lists/........json',
-                      'name-lists/........json',
-                      'name-lists/........json'],
+    merge_json_files(['../name-lists/........json',
+                      '../name-lists/........json',
+                      '../name-lists/........json',
+                      '../name-lists/........json',
+                      '../name-lists/........json'],
                      'female_names.json')
 
 
