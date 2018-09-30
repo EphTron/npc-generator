@@ -1,6 +1,5 @@
 # Libraries
 import os
-import time
 import pdfkit
 import random as rand
 import pandas as pd
@@ -147,16 +146,18 @@ def create_html(name, image_path, attr_path):
     :param attr_path: str
     :return: str (html)
     """
+
+    full_path = os.path.abspath(".")
     d = pq(filename='templates/friend-sheet.html')
     d("#full-name").text(name)
     d("#profile-img").attr('style',
-                           'background-image: url(/home/ephtron/Projects/new-world/npc-generator/' + image_path + ')')
+                           'background-image: url(' + full_path + '/' + image_path + ')')
 
     d("#attribute-img").attr('style',
-                             'background-image: url(/home/ephtron/Projects/new-world/npc-generator/' + attr_path + ')')
+                             'background-image: url(' + full_path + '/' + attr_path + ')')
 
-    # d("#profile-img").attr('src', '/home/ephtron/Projects/new-world/npc-generator/' + image_path)
-    # d("#attribute-img").attr('src', '/home/ephtron/Projects/new-world/npc-generator/' + attr_path)
+    # d("#profile-img").attr('src', full_path + '/' + image_path)
+    # d("#attribute-img").attr('src', full_path + '/' + attr_path)
     return str(d)
 
 

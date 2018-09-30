@@ -1,10 +1,15 @@
 .idea/
 inputs/images/*.jpg
+inputs/images/*.png
 inputs/images/male/*.jpg
 inputs/images/male/*.png
 inputs/images/URL.txt
 inputs/images/female/*.png
 inputs/images/female/*.jpg
+
+outputs/pdf/*.pdf
+outputs/html/*.html
+outputs/attribute_images/*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
