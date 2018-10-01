@@ -1,5 +1,6 @@
-import pandas as pd
 import pdfkit
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def merge_json_files(file_path_list, output_json_file):
@@ -123,6 +124,38 @@ def create_pdf_from_html_string(html_str):
     html_doc.write(html_str)
     html_doc.close()
     pdf = pdfkit.from_file('out.html', 'out-from-html.pdf', options=options)
+
+
+def force_aspect(ax, aspect=1):
+    """
+    Force aspect ratio of matplotlib image.
+    https://stackoverflow.com/questions/7965743/how-can-i-set-the-aspect-ratio-in-matplotlib
+    :param ax: axes handle
+    :param aspect: float
+    :return: -
+    """
+    im = ax.get_images()
+    extent = im[0].get_extent()
+    ax.set_aspect(abs((extent[1] - extent[0]) / (extent[3] - extent[2])) / aspect)
+
+
+def set_size(w, h, ax=None):
+    """ w, h: width, height in inches """
+    if not ax: ax = plt.gca()
+    l = ax.figure.subplotpars.left
+    r = ax.figure.subplotpars.right
+    t = ax.figure.subplotpars.top
+    b = ax.figure.subplotpars.bottom
+    figw = float(w) / (r - l)
+    figh = float(h) / (t - b)
+    ax.figure.set_size_inches(figw, figh)
+
+
+def prepare_name(name):
+    pre_name = name.replace(" ", "")
+    pre_name = pre_name.replace('"', "")
+    pre_name = pre_name.replace("'", "")
+    return pre_name
 
 
 def main():

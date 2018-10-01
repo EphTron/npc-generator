@@ -4,6 +4,7 @@ import pdfkit
 import random as rand
 import pandas as pd
 import matplotlib.pyplot as plt
+import src.utils as util
 
 from math import pi
 from pyquery import PyQuery as pq
@@ -31,14 +32,14 @@ def generate_name():
 
     if has_nick:
         nick_names = list(pd.read_json(input_dir + 'name-lists/nick_names.json').names)
-        name = name + " " + rand.choice(nick_names)
+        name = name + ' "' + rand.choice(nick_names) + '"'
 
     surnames = list(pd.read_json(input_dir + 'name-lists/surnames_worldwide.json').names)
     name = name + " " + rand.choice(surnames)
     return name, gender
 
 
-def select_image(gender, male_img_dir='images/male', female_img_dir='images/male'):
+def select_image(gender, male_img_dir='images/male/', female_img_dir='images/female/'):
     """
     Select a random image depending on the gender.
     Returns the path to the selected image.
@@ -75,7 +76,7 @@ def generate_attribute_values():
     sincerity = rand.randint(1, 10)
     tolerance = rand.randint(1, 10)
     resilience = rand.randint(1, 10)
-    power = rand.randint(1, 10)
+    influence = rand.randint(1, 10)
     violence = rand.randint(1, 10)
 
     # Set data
@@ -84,10 +85,11 @@ def generate_attribute_values():
         'Hilfsbereitschaft': [helpful],
         'Gesetzestreue': [law_abiding],
         'Aufrichtigkeit': [sincerity],
+        'Skrupel-\nlosigkeit': [violence],
         'Toleranz': [tolerance],
+        'Einfluss': [influence],
         'Belastbarkeit': [resilience],
-        'Macht': [power],
-        'Brutalitaet': [violence]
+
     })
 
     return df
@@ -110,6 +112,8 @@ def create_attributes_image(name, data_frame):
     # What will be the angle of each axis in the plot? (we divide the plot / number of variable)
     angles = [n / float(N) * 2 * pi for n in range(N)]
     angles += angles[:1]
+    fig = plt.figure(figsize=(5, 3), facecolor='#666666')
+    fig.patch.set_facecolor('#000000')
 
     # Initialise the spider plot
     ax = plt.subplot(111, polar=True)
@@ -123,15 +127,17 @@ def create_attributes_image(name, data_frame):
 
     # Draw ylabels
     ax.set_rlabel_position(0)
-    plt.yticks([0, 2, 4, 6, 8, 10], ["", "2", "4", "6", "8", "10"], color="grey", size=7)
+    plt.yticks([0, 2, 4, 6, 8, 10], ["", "", "", "", "", ""], color="grey", size=7)
     plt.ylim(0, 10)
+    ax.set_facecolor('#888888')
+    plt.rcParams['savefig.facecolor'] = '#888888'
 
     values = data_frame.loc[0].drop('group').values.flatten().tolist()
     values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid')
-    ax.fill(angles, values, 'b', alpha=0.1)
-    attribute_image_path = output_dir + 'attribute_images/' + name.replace(" ", "") + '.png'
-    plt.savefig(attribute_image_path)
+    ax.plot(angles, values, 'r', linewidth=1, linestyle='solid', )
+    ax.fill(angles, values, 'r', alpha=0.1)
+    attribute_image_path = output_dir + 'attribute_images/' + util.prepare_name(name) + '.png'
+    plt.savefig(attribute_image_path, dpi=300)
 
     return attribute_image_path
 
@@ -180,11 +186,11 @@ def create_pdf_from_html(name, html):
         'quiet': '',
     }
 
-    html_doc_path = output_dir + 'html/' + name.replace(" ", "") + '.html'
+    html_doc_path = output_dir + 'html/' + util.prepare_name(name) + '.html'
     html_doc = open(html_doc_path, 'w')
     html_doc.write(html)
     html_doc.close()
-    character_path = output_dir + 'pdf/' + name.replace(" ", "") + '.pdf'
+    character_path = output_dir + 'pdf/' + util.prepare_name(name) + '.pdf'
     pdfkit.from_file(html_doc_path, character_path, options=options, css='templates/style.css')
 
 
