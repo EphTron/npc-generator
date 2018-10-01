@@ -1,15 +1,55 @@
-body{
+body {
     margin: 0 0 0 0;
+    background-color: #888888;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 5px;
+}
+
+#full-name {
+    margin-left: 40px;
+    font-family: leixo;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 #page {
-    min-height: 700px;
+    min-height: 670px;
 }
 
-.img{
+#profile-img {
+    width: 420px;
+    min-height: 270px;
+    border-style: solid;
+    border-width: 1.5px;
+    border-radius: 1.5px;
+}
+
+#infos {
+    margin-top: 10px;
+    min-height: 100px;
+}
+
+#attribute-img {
+    width: 380px;
+    min-width: 360px;
+    min-height: 220px;
+    left: 58px;
+    position: absolute;
+    bottom: 10px;
+}
+
+.img {
     margin-left: auto;
     margin-right: auto;
-    min-width: 360px;
-    min-height: 270px;
     background-size: cover;
+}
+
+.info-text {
+    margin-left: 45px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-family: Roboto;
 }
